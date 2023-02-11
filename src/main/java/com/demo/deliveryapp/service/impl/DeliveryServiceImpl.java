@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.demo.deliveryapp.domain.dto.request.DeliveryUpdateReqDto;
 import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 import com.demo.deliveryapp.domain.entity.Delivery;
 import com.demo.deliveryapp.domain.entity.Member;
+import com.demo.deliveryapp.domain.enums.DeliveryStatus;
+import com.demo.deliveryapp.exception.DeliveryStatusUnchangeableException;
 import com.demo.deliveryapp.exception.OverSelectedDateGapException;
 import com.demo.deliveryapp.repository.DeliveryRepository;
 import com.demo.deliveryapp.repository.MemberRepository;
@@ -26,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
@@ -44,9 +49,25 @@ public class DeliveryServiceImpl implements DeliveryService {
 			= this.deliveryRepository.findDeliveriesByMemberAndDeliveryDtBetween(member, startLocalDate.atStartOfDay(), endLocalDate.atTime(LocalTime.MAX)).orElse(null);
 
 		assert deliveryList != null;
+		DeliveryResDto resDto = new DeliveryResDto();
 		return deliveryList.stream()
-			.map(Delivery::entityListToDtoList)
+			.map(resDto::entityToDto)
 			 .collect(Collectors.toList());
+	}
+
+	@Override
+	public DeliveryResDto updateDelivery(DeliveryUpdateReqDto dto) {
+		Long deliveryNo = dto.getDeliveryNo();
+		String address = dto.getAddress();
+		Delivery delivery = deliveryRepository.findByDeliveryNo(deliveryNo);
+
+		if (!delivery.getDeliveryStatus().equals(DeliveryStatus.NOT_STARTED)) {
+			 throw new DeliveryStatusUnchangeableException();
+		}
+
+		delivery.setAddress(address);
+		DeliveryResDto resDto = new DeliveryResDto();
+		return resDto.entityToDto(deliveryRepository.save(delivery));
 	}
 
 	/**

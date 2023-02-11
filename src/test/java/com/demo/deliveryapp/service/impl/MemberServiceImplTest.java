@@ -5,11 +5,12 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
+import com.demo.deliveryapp.domain.dto.request.MemberSignUpReqDto;
 import com.demo.deliveryapp.domain.dto.response.MemberSignUpResDto;
 import com.demo.deliveryapp.domain.entity.Member;
 import com.demo.deliveryapp.repository.MemberRepository;
@@ -31,6 +32,7 @@ class MemberServiceImplTest {
 	}
 
 	@Test
+	@DisplayName("회원가입 테스트")
 	void signUp() {
 		Mockito.when(memberRepository.save(any(Member.class))).then(returnsFirstArg());
 

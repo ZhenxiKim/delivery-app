@@ -1,6 +1,6 @@
 package com.demo.deliveryapp.service;
 
-import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
+import com.demo.deliveryapp.domain.dto.request.MemberSignUpReqDto;
 import com.demo.deliveryapp.domain.dto.response.MemberSignUpResDto;
 
 /**

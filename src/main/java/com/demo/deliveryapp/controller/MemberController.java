@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
+import com.demo.deliveryapp.domain.dto.request.MemberSignUpReqDto;
 import com.demo.deliveryapp.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/member")
 public class MemberController {
 	private final MemberService memberService;
-
 	@PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> signUp(@Valid @RequestBody MemberSignUpReqDto memberSignUpReqDto) {
 		return ResponseEntity.status(HttpStatus.CREATED)

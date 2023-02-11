@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.deliveryapp.domain.dto.AuthenticationRequestDto;
+import com.demo.deliveryapp.domain.dto.request.AuthenticationRequestDto;
 import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
 import com.demo.deliveryapp.exception.UnauthorizedException;
 import com.demo.deliveryapp.service.AuthenticationService;
@@ -23,9 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-
 	private final AuthenticationService authenticationService;
-
 	@PostMapping("/login")
 	public ResponseEntity<?> authentication(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws UnauthorizedException{
 		try {

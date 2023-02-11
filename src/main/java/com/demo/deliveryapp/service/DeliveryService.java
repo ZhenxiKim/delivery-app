@@ -2,6 +2,7 @@ package com.demo.deliveryapp.service;
 
 import java.util.List;
 
+import com.demo.deliveryapp.domain.dto.request.DeliveryUpdateReqDto;
 import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 
 /**
@@ -11,4 +12,5 @@ import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
  */
 public interface DeliveryService {
 	List<DeliveryResDto> getDeliveryList(Long memberNo, String startDate, String endDate);
+	DeliveryResDto updateDelivery(DeliveryUpdateReqDto dto);
 }

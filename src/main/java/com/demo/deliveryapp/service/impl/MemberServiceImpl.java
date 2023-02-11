@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
+import com.demo.deliveryapp.domain.dto.request.MemberSignUpReqDto;
 import com.demo.deliveryapp.domain.dto.response.MemberSignUpResDto;
 import com.demo.deliveryapp.domain.entity.Member;
 import com.demo.deliveryapp.exception.ExistMemberException;
@@ -27,10 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
-
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
-
 	@Override
 	public MemberSignUpResDto signUp(MemberSignUpReqDto memberSignUpReqDto) {
 		extracted(memberSignUpReqDto);

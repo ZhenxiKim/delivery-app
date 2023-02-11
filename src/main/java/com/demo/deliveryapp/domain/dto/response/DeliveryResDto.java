@@ -2,6 +2,7 @@ package com.demo.deliveryapp.domain.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.demo.deliveryapp.domain.entity.Delivery;
 import com.demo.deliveryapp.domain.enums.DeliveryStatus;
 import com.demo.deliveryapp.domain.enums.OrderPlatform;
 
@@ -18,4 +19,13 @@ public class DeliveryResDto {
 	private OrderPlatform orderPlatform;
 	private DeliveryStatus deliveryStatus;
 	private LocalDateTime deliveryDt;
+
+	public DeliveryResDto entityToDto(Delivery delivery) {
+		DeliveryResDto dto = new DeliveryResDto();
+		dto.setAddress(delivery.getAddress());
+		dto.setOrderPlatform(delivery.getOrderPlatform());
+		dto.setDeliveryDt(delivery.getDeliveryDt());
+		dto.setDeliveryStatus(delivery.getDeliveryStatus());
+		return dto;
+	}
 }

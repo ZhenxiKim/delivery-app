@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 import com.demo.deliveryapp.domain.enums.DeliveryStatus;
 import com.demo.deliveryapp.domain.enums.OrderPlatform;
 
@@ -46,12 +45,4 @@ public class Delivery extends BaseTimeEntity{
 	@JoinColumn(name = "member_no")
 	private Member member;
 
-	public static DeliveryResDto entityListToDtoList(Delivery delivery) {
-		DeliveryResDto dto = new DeliveryResDto();
-		dto.setAddress(delivery.getAddress());
-		dto.setOrderPlatform(delivery.getOrderPlatform());
-		dto.setDeliveryDt(delivery.getDeliveryDt());
-		dto.setDeliveryStatus(delivery.getDeliveryStatus());
-		return dto;
-	}
 }

@@ -1,4 +1,4 @@
-package com.demo.deliveryapp.domain.dto;
+package com.demo.deliveryapp.domain.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

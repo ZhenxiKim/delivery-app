@@ -17,9 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.demo.deliveryapp.domain.dto.request.DeliveryUpdateReqDto;
 import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 import com.demo.deliveryapp.domain.entity.Delivery;
 import com.demo.deliveryapp.domain.entity.Member;
+import com.demo.deliveryapp.domain.enums.DeliveryStatus;
+import com.demo.deliveryapp.exception.DeliveryStatusUnchangeableException;
 import com.demo.deliveryapp.repository.DeliveryRepository;
 import com.demo.deliveryapp.repository.MemberRepository;
 
@@ -32,15 +35,13 @@ import com.demo.deliveryapp.repository.MemberRepository;
 class DeliveryServiceImplTest {
 	@Mock
 	private DeliveryRepository deliveryRepository;
-
 	@Mock
 	private MemberRepository memberRepository;
-
 	@InjectMocks
 	private DeliveryServiceImpl deliveryService;
 
 	@Test
-	@DisplayName("배송조회 service unit test")
+	@DisplayName("배달 조회 test")
 	void getDeliveryList() {
 		String startDate = "2022-01-01";
 		String endDate = "2022-01-03";
@@ -63,5 +64,47 @@ class DeliveryServiceImplTest {
 		List<DeliveryResDto> actualResult = deliveryService.getDeliveryList(memberNo, startDate, endDate);
 
 		assertEquals(2, actualResult.size());
+	}
+
+	@Test
+	@DisplayName("배달 정보 수정 exception test")
+	void updateDeliveryException() {
+		Long deliveryNo = 1L;
+		DeliveryUpdateReqDto dto = new DeliveryUpdateReqDto();
+		dto.setDeliveryNo(deliveryNo);
+		dto.setAddress("Address");
+
+		Delivery delivery = new Delivery();
+		delivery.setDeliveryNo(deliveryNo);
+		delivery.setDeliveryStatus(DeliveryStatus.DONE);
+
+		when(deliveryRepository.findByDeliveryNo(any(Long.class))).thenReturn(delivery);
+
+		assertThrows(DeliveryStatusUnchangeableException.class, () -> {
+			deliveryService.updateDelivery(dto);
+		});
+	}
+
+	@Test
+	@DisplayName("배달 정보 수정 test")
+	void updateDelivery() {
+		Long deliveryNo = 1L;
+		Delivery delivery = new Delivery();
+		delivery.setDeliveryNo(deliveryNo);
+		delivery.setDeliveryStatus(DeliveryStatus.NOT_STARTED);
+		delivery.setAddress("Address");
+
+		String testModefiedTxt = "수정 테스트";
+		DeliveryUpdateReqDto dto = new DeliveryUpdateReqDto();
+
+		dto.setAddress(testModefiedTxt);
+		dto.setDeliveryNo(deliveryNo);
+
+		when(deliveryRepository.save(any(Delivery.class))).thenReturn(delivery);
+		when(deliveryRepository.findByDeliveryNo(any(Long.class))).thenReturn(delivery);
+
+		DeliveryResDto deliveryResDto = deliveryService.updateDelivery(dto);
+
+		assertEquals(deliveryResDto.getAddress(), testModefiedTxt);
 	}
 }
