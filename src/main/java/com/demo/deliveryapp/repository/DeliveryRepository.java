@@ -18,4 +18,5 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 	//Optional<List<Delivery>> findDeliveriesByDeliveryDtBetweenAndMemberNo(Long memberNo, LocalDateTime startDate, LocalDateTime endDate);
 	Optional<List<Delivery>> findDeliveriesByMemberAndDeliveryDtBetween(Member memberNo, LocalDateTime startDate, LocalDateTime endDate);
 
+	Delivery findByDeliveryNo(Long deliveryNo);
 }

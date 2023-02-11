@@ -46,12 +46,4 @@ public class Delivery extends BaseTimeEntity{
 	@JoinColumn(name = "member_no")
 	private Member member;
 
-	public static DeliveryResDto entityListToDtoList(Delivery delivery) {
-		DeliveryResDto dto = new DeliveryResDto();
-		dto.setAddress(delivery.getAddress());
-		dto.setOrderPlatform(delivery.getOrderPlatform());
-		dto.setDeliveryDt(delivery.getDeliveryDt());
-		dto.setDeliveryStatus(delivery.getDeliveryStatus());
-		return dto;
-	}
 }

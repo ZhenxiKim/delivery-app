@@ -1,6 +1,6 @@
 package com.demo.deliveryapp.service;
 
-import com.demo.deliveryapp.domain.dto.AuthenticationRequestDto;
+import com.demo.deliveryapp.domain.dto.request.AuthenticationRequestDto;
 import com.demo.deliveryapp.domain.dto.AuthenticationResponseDto;
 
 /**

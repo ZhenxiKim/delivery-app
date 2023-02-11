@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
+import com.demo.deliveryapp.domain.dto.request.MemberSignUpReqDto;
 import com.demo.deliveryapp.domain.dto.response.MemberSignUpResDto;
 import com.demo.deliveryapp.domain.entity.Member;
 import com.demo.deliveryapp.exception.ExistMemberException;
