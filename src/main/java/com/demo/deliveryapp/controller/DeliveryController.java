@@ -7,11 +7,13 @@ import javax.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.deliveryapp.domain.dto.AuthenticatedUser;
 import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 import com.demo.deliveryapp.service.DeliveryService;
 
@@ -32,9 +34,10 @@ public class DeliveryController {
 	private final DeliveryService deliveryService;
 
 	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DeliveryResDto>> getDeliveryList(@Pattern(regexp = DATE_REGEX) @RequestParam String startDate,
-		@Pattern(regexp = DATE_REGEX) @RequestParam String endDate) {
+	public ResponseEntity<List<DeliveryResDto>> getDeliveryList(@AuthenticationPrincipal AuthenticatedUser user
+		,@Pattern(regexp = DATE_REGEX) @RequestParam String startDate
+		,@Pattern(regexp = DATE_REGEX) @RequestParam String endDate) {
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(deliveryService.getDeliveryList(startDate, endDate));
+			.body(deliveryService.getDeliveryList(user.getMemberNo(), startDate, endDate));
 	}
 }
