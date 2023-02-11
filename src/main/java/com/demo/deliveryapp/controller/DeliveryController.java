@@ -23,6 +23,7 @@ import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
 import com.demo.deliveryapp.exception.UnauthorizedException;
 import com.demo.deliveryapp.service.DeliveryService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeliveryController {
 	private static final String DATE_REGEX = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$";
 	private final DeliveryService deliveryService;
+	@Operation(summary = "배달 조회 API", description = "로그인 후 token 획득 후 조회 가능")
 	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<DeliveryResDto>> getDeliveryList(@AuthenticationPrincipal AuthenticatedUser user
 		,@Pattern(regexp = DATE_REGEX) @RequestParam String startDate
@@ -47,6 +49,7 @@ public class DeliveryController {
 			.body(deliveryService.getDeliveryList(user.getMemberNo(), startDate, endDate));
 	}
 
+	@Operation(summary = "배달 정보 수정 API", description = "로그인 후 token 획득 후 조회 가능")
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DeliveryResDto> updateDelivery(@AuthenticationPrincipal AuthenticatedUser user, @RequestBody DeliveryUpdateReqDto dto) {
 		checkToken(user);

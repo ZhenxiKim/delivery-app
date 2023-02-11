@@ -12,6 +12,7 @@ import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
 import com.demo.deliveryapp.exception.UnauthorizedException;
 import com.demo.deliveryapp.service.AuthenticationService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 	private final AuthenticationService authenticationService;
+	@Operation(summary = "로그인 API")
 	@PostMapping("/login")
 	public ResponseEntity<?> authentication(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws UnauthorizedException{
 		try {
