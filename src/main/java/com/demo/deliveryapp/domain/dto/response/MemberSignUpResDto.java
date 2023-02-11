@@ -24,16 +24,15 @@ public class MemberSignUpResDto {
 
 	private String email;
 
-	private String password;
-
 	private String name;
 
-	private LocalDateTime createdDateTime;
+	private LocalDateTime signUpDateTime;
 
 	public static MemberSignUpResDto entityToDto(Member member) {
 		return MemberSignUpResDto.builder()
 			.email(member.getMemberEmail())
 			.name(member.getMemberName())
+			.signUpDateTime(member.getMemberSignupDate())
 			.build();
 	}
 }

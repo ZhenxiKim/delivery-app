@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 import com.demo.deliveryapp.domain.enums.DeliveryStatus;
@@ -38,6 +41,10 @@ public class Delivery extends BaseTimeEntity{
 	private DeliveryStatus deliveryStatus;
 
 	private LocalDateTime deliveryDt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_no")
+	private Member member;
 
 	public static DeliveryResDto entityListToDtoList(Delivery delivery) {
 		DeliveryResDto dto = new DeliveryResDto();

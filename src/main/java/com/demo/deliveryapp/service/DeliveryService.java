@@ -10,5 +10,5 @@ import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
  *
  */
 public interface DeliveryService {
-	List<DeliveryResDto> getDeliveryList(String startDate, String endDate);
+	List<DeliveryResDto> getDeliveryList(Long memberNo, String startDate, String endDate);
 }
