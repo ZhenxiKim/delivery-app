@@ -2,7 +2,12 @@ package com.demo.deliveryapp.domain.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.demo.deliveryapp.domain.entity.Member;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -12,6 +17,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MemberSignUpResDto {
 
 	private String email;
@@ -21,4 +29,11 @@ public class MemberSignUpResDto {
 	private String name;
 
 	private LocalDateTime createdDateTime;
+
+	public static MemberSignUpResDto entityToDto(Member member) {
+		return MemberSignUpResDto.builder()
+			.email(member.getMemberEmail())
+			.name(member.getMemberName())
+			.build();
+	}
 }
