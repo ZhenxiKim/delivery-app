@@ -37,7 +37,6 @@ public class CommonExceptionHandler {
 			.builder()
 			.code(exceptionCode.getExceptionCode())
 			.msg(exceptionCode.getMsgDetail())
-			.data(null)
 			.build();
 		return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
 	}
