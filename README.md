@@ -1,7 +1,7 @@
 ## 사용 기술
 
 --- 
-java11, spring-boot(2.6.13), H2, JPA, Gradle
+java11, spring-boot(2.6.13), H2, JPA, Gradle, Junit5, Spring Security
 
 ## 패키지 구조
 
