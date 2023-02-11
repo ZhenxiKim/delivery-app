@@ -1,11 +1,15 @@
 package com.demo.deliveryapp.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
+import com.demo.deliveryapp.domain.dto.response.MemberSignUpResDto;
 import com.demo.deliveryapp.domain.entity.Member;
 import com.demo.deliveryapp.exception.ExistMemberException;
 import com.demo.deliveryapp.repository.MemberRepository;
@@ -28,28 +32,27 @@ public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public Member signUp(MemberSignUpReqDto memberSignUpReqDto) {
+	public MemberSignUpResDto signUp(MemberSignUpReqDto memberSignUpReqDto) {
+		extracted(memberSignUpReqDto);
 
-		boolean isExist = isExistMember(memberSignUpReqDto);
 		Member memberEntity = new Member();
-		if(isExist) {
-			memberEntity.setMemberName(memberSignUpReqDto.getName());
-			memberEntity.setMemberEmail(memberSignUpReqDto.getEmail());
-			memberEntity.setMemberPassword(passwordEncoder.encode(memberSignUpReqDto.getPassword()));
-			memberEntity.setMemberSignupDate(LocalDateTime.now());
-			return memberRepository.save(memberEntity);
-		}
-		return memberEntity;
+		memberEntity.setMemberName(memberSignUpReqDto.getName());
+		memberEntity.setMemberEmail(memberSignUpReqDto.getEmail());
+		memberEntity.setMemberPassword(passwordEncoder.encode(memberSignUpReqDto.getPassword()));
+		memberEntity.setMemberSignupDate(LocalDateTime.now());
+
+		return Stream.of(memberRepository.save(memberEntity)).map(MemberSignUpResDto::entityToDto).collect(Collectors.toList()).get(0);
+
 	}
 
-
-	@Override
-	public boolean isExistMember(MemberSignUpReqDto memberSignUpReqDto) {
-		Member member = memberRepository.findByMemberEmail(memberSignUpReqDto.getEmail());
-		if(member != null) {
+	/**
+	 * 존재하는 회원인지 검사
+	 * @param memberSignUpReqDto
+	 */
+	private void extracted(MemberSignUpReqDto memberSignUpReqDto) {
+		Member existMember = memberRepository.findByMemberEmail(memberSignUpReqDto.getEmail());
+		if(ObjectUtils.isNotEmpty(existMember)) {
 			throw new ExistMemberException();
 		}
-		return true;
 	}
-
 }

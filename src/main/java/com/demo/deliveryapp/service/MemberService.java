@@ -1,7 +1,7 @@
 package com.demo.deliveryapp.service;
 
 import com.demo.deliveryapp.domain.dto.MemberSignUpReqDto;
-import com.demo.deliveryapp.domain.entity.Member;
+import com.demo.deliveryapp.domain.dto.response.MemberSignUpResDto;
 
 /**
  * @author jhkim
@@ -9,6 +9,5 @@ import com.demo.deliveryapp.domain.entity.Member;
  *
  */
 public interface MemberService {
-	Member signUp(MemberSignUpReqDto memberSignUpReqDto);
-	boolean isExistMember(MemberSignUpReqDto memberSignUpReqDto);
+	MemberSignUpResDto signUp(MemberSignUpReqDto memberSignUpReqDto);
 }

@@ -41,9 +41,7 @@ public class Member extends BaseTimeEntity{
 
 	private LocalDateTime memberSignupDate;
 
-	public Member(String memberEmail, String memberPassword, String memberName) {
-		this.memberEmail = memberEmail;
-		this.memberPassword = memberPassword;
-		this.memberName = memberName;
-	}
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "member_no")
+	private List<Delivery> deliveryList = new ArrayList<>();
 }
