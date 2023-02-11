@@ -38,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 public class DeliveryController {
 	private static final String DATE_REGEX = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$";
 	private final DeliveryService deliveryService;
-
 	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<DeliveryResDto>> getDeliveryList(@AuthenticationPrincipal AuthenticatedUser user
 		,@Pattern(regexp = DATE_REGEX) @RequestParam String startDate
@@ -48,7 +47,6 @@ public class DeliveryController {
 			.body(deliveryService.getDeliveryList(user.getMemberNo(), startDate, endDate));
 	}
 
-
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DeliveryResDto> updateDelivery(@AuthenticationPrincipal AuthenticatedUser user, @RequestBody DeliveryUpdateReqDto dto) {
 		checkToken(user);
@@ -56,6 +54,10 @@ public class DeliveryController {
 			.body(deliveryService.updateDelivery(dto));
 	}
 
+	/**
+	 * token 값 확인
+	 * @param user
+	 */
 	private static void checkToken(AuthenticatedUser user) {
 		if(ObjectUtils.isEmpty(user)) {
 			throw new UnauthorizedException(SpecificExceptionCode.INVALID_JWT_TOKEN);

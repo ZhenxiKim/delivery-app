@@ -1,14 +1,11 @@
 package com.demo.deliveryapp.service.impl;
 
-import static com.demo.deliveryapp.domain.entity.Delivery.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

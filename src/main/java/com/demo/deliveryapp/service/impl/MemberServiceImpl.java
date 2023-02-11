@@ -27,10 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
-
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
-
 	@Override
 	public MemberSignUpResDto signUp(MemberSignUpReqDto memberSignUpReqDto) {
 		extracted(memberSignUpReqDto);

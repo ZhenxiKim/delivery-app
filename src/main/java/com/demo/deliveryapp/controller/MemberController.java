@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/member")
 public class MemberController {
 	private final MemberService memberService;
-
 	@PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> signUp(@Valid @RequestBody MemberSignUpReqDto memberSignUpReqDto) {
 		return ResponseEntity.status(HttpStatus.CREATED)

@@ -23,9 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-
 	private final AuthenticationService authenticationService;
-
 	@PostMapping("/login")
 	public ResponseEntity<?> authentication(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws UnauthorizedException{
 		try {
