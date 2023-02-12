@@ -15,6 +15,7 @@ import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
 import com.demo.deliveryapp.domain.entity.Delivery;
 import com.demo.deliveryapp.domain.entity.Member;
 import com.demo.deliveryapp.domain.enums.DeliveryStatus;
+import com.demo.deliveryapp.exception.DataNotFoundException;
 import com.demo.deliveryapp.exception.DeliveryStatusUnchangeableException;
 import com.demo.deliveryapp.exception.OverSelectedDateGapException;
 import com.demo.deliveryapp.repository.DeliveryRepository;
@@ -36,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DeliveryServiceImpl implements DeliveryService {
 	private final DeliveryRepository deliveryRepository;
 	private final MemberRepository memberRepository;
+
 	@Override
 	public List<DeliveryResDto> getDeliveryList(Long memberNo, String startDate, String endDate) {
 
@@ -43,29 +45,40 @@ public class DeliveryServiceImpl implements DeliveryService {
 		LocalDate endLocalDate = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
 		checkDateGap(startLocalDate, endLocalDate);
 
-		Member member = memberRepository.findByMemberNo(memberNo);
+		Member member = memberRepository.findByMemberNo(memberNo)
+			.orElseThrow(IllegalArgumentException::new);
 
 		List<Delivery> deliveryList
-			= this.deliveryRepository.findDeliveriesByMemberAndDeliveryDtBetween(member, startLocalDate.atStartOfDay(), endLocalDate.atTime(LocalTime.MAX)).orElse(null);
+			= this.deliveryRepository.findDeliveriesByMemberAndDeliveryDtBetween(member, startLocalDate.atStartOfDay(),
+			endLocalDate.atTime(LocalTime.MAX));
 
 		assert deliveryList != null;
-		DeliveryResDto resDto = new DeliveryResDto();
+
 		return deliveryList.stream()
-			.map(resDto::entityToDto)
-			 .collect(Collectors.toList());
+			.map(delivery -> {
+				DeliveryResDto resDto = new DeliveryResDto();
+				resDto.entityToDto(delivery);
+				return resDto;
+			})
+			.collect(Collectors.toList());
 	}
 
 	@Override
-	public DeliveryResDto updateDelivery(DeliveryUpdateReqDto dto) {
-		Long deliveryNo = dto.getDeliveryNo();
+	public DeliveryResDto updateDelivery(Long memberNo, DeliveryUpdateReqDto dto, Long deliveryNo) {
 		String address = dto.getAddress();
-		Delivery delivery = deliveryRepository.findByDeliveryNo(deliveryNo);
 
-		if (!delivery.getDeliveryStatus().equals(DeliveryStatus.NOT_STARTED)) {
-			 throw new DeliveryStatusUnchangeableException();
+		Delivery delivery = deliveryRepository.findByDeliveryNo(deliveryNo)
+			.orElseThrow(DataNotFoundException::new);
+
+		if (!delivery.getMember().getMemberNo().equals(memberNo)) {
+			throw new IllegalArgumentException();
 		}
 
-		delivery.setAddress(address);
+		if (DeliveryStatus.NOT_STARTED != delivery.getDeliveryStatus()) {
+			throw new DeliveryStatusUnchangeableException();
+		}
+
+		delivery.updateAddress(address);
 		DeliveryResDto resDto = new DeliveryResDto();
 		return resDto.entityToDto(deliveryRepository.save(delivery));
 	}
@@ -77,7 +90,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	 */
 	private void checkDateGap(LocalDate startDate, LocalDate endDate) {
 		Period period = Period.between(startDate, endDate);
-		if(period.getDays() > 3) {
+		if (period.getDays() > 3) {
 			throw new OverSelectedDateGapException();
 		}
 	}

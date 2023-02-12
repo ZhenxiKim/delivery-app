@@ -18,5 +18,4 @@ public enum OrderPlatform {
 
 	private final String orderPlatformName;
 
-
 }

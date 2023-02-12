@@ -7,16 +7,13 @@ import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
  * @since 2023-02-08
  *
  */
-public class CustomException extends RuntimeException{
-
+public class CustomException extends RuntimeException {
 	private final SpecificExceptionCode exceptionCode;
-
-	public CustomException(SpecificExceptionCode exceptionCode){
+	public CustomException(SpecificExceptionCode exceptionCode) {
 		super(exceptionCode.getMsgDetail());
 		this.exceptionCode = exceptionCode;
 	}
-
-	public SpecificExceptionCode getExceptionCode(){
+	public SpecificExceptionCode getExceptionCode() {
 		return exceptionCode;
 	}
 }

@@ -8,9 +8,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+
+import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
+import com.demo.deliveryapp.exception.UnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,11 +35,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		IOException, ServletException {
 		String token = jwtTokenProvider.resolveToken((HttpServletRequest)request);
 		String requestURI = ((HttpServletRequest)request).getRequestURI();
-		if (token != null && jwtTokenProvider.validateToken(token)) {
+		if (ObjectUtils.isNotEmpty(token) && jwtTokenProvider.validateToken(token)) {
 			Authentication authentication = jwtTokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} else {
-			log.info("invalid jwt token , uri: {}", requestURI);
+			log.error("error request uri : {} ", requestURI);
 		}
 		chain.doFilter(request, response);
 	}

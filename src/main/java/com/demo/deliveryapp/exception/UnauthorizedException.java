@@ -8,7 +8,6 @@ import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
  *
  */
 public class UnauthorizedException extends CustomException {
-
 	public UnauthorizedException(SpecificExceptionCode notExistMemberException) {
 		super(notExistMemberException);
 	}

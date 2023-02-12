@@ -11,5 +11,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @Configuration
 @EnableJpaAuditing
 public class JpaAuditingConfiguration {
-	//test 편의를 위해 분리
 }

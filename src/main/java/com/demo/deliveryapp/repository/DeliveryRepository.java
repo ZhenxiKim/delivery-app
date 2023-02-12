@@ -15,8 +15,8 @@ import com.demo.deliveryapp.domain.entity.Member;
  *
  */
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
-	//Optional<List<Delivery>> findDeliveriesByDeliveryDtBetweenAndMemberNo(Long memberNo, LocalDateTime startDate, LocalDateTime endDate);
-	Optional<List<Delivery>> findDeliveriesByMemberAndDeliveryDtBetween(Member memberNo, LocalDateTime startDate, LocalDateTime endDate);
+	List<Delivery> findDeliveriesByMemberAndDeliveryDtBetween(Member memberNo, LocalDateTime startDate,
+		LocalDateTime endDate);
 
-	Delivery findByDeliveryNo(Long deliveryNo);
+	Optional<Delivery> findByDeliveryNo(Long deliveryNo);
 }

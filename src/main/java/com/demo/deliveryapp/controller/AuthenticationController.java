@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.deliveryapp.domain.dto.request.AuthenticationRequestDto;
-import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
 import com.demo.deliveryapp.exception.UnauthorizedException;
 import com.demo.deliveryapp.service.AuthenticationService;
 
@@ -25,13 +24,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 	private final AuthenticationService authenticationService;
+
 	@Operation(summary = "로그인 API")
 	@PostMapping("/login")
-	public ResponseEntity<?> authentication(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws UnauthorizedException{
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(authenticationService.login(authenticationRequestDto));
-		} catch (Exception e) {
-			throw new UnauthorizedException(SpecificExceptionCode.NOT_EXIST_MEMBER_EXCEPTION);
-		}
+	public ResponseEntity<?> authentication(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws
+		UnauthorizedException {
+		return ResponseEntity.status(HttpStatus.OK).body(authenticationService.login(authenticationRequestDto));
 	}
 }

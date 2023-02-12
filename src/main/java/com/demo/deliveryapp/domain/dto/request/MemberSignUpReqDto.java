@@ -29,8 +29,9 @@ public class MemberSignUpReqDto {
 
 	@NotNull(message = "비밀번호는 필수값 입니다.")
 	@Size(min = 12)
-	@Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{12,100}", message = "비밀번호는 영어 대,소문자, 숫자, 특수문자 중 3종류 이상으로"
-		+ "12자리 이상를 사용하세요.")
+	@Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{12,100}", message =
+		"비밀번호는 영어 대,소문자, 숫자, 특수문자 중 3종류 이상으로"
+			+ "12자리 이상를 사용하세요.")
 	private String password;
 
 	@NotBlank(message = "사용할 이름을 입력해주세요.")

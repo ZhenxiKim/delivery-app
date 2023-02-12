@@ -15,7 +15,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DeliveryUpdateReqDto {
 	@NonNull
-	private Long deliveryNo;
-	@NonNull
 	private String address;
 }

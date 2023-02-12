@@ -1,10 +1,8 @@
 package com.demo.deliveryapp.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,28 +27,31 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+
 	@Override
 	public MemberSignUpResDto signUp(MemberSignUpReqDto memberSignUpReqDto) {
-		extracted(memberSignUpReqDto);
+		isExistMember(memberSignUpReqDto);
 
-		Member memberEntity = new Member();
-		memberEntity.setMemberName(memberSignUpReqDto.getName());
-		memberEntity.setMemberEmail(memberSignUpReqDto.getEmail());
-		memberEntity.setMemberPassword(passwordEncoder.encode(memberSignUpReqDto.getPassword()));
-		memberEntity.setMemberSignupDate(LocalDateTime.now());
+		Member memberEntity = Member.builder()
+			.memberName(memberSignUpReqDto.getName())
+			.memberEmail(memberSignUpReqDto.getEmail())
+			.memberPassword(passwordEncoder.encode(memberSignUpReqDto.getPassword()))
+			.build();
 
-		return Stream.of(memberRepository.save(memberEntity)).map(MemberSignUpResDto::entityToDto).collect(Collectors.toList()).get(0);
-
+		return Stream.of(memberRepository.save(memberEntity))
+			.map(MemberSignUpResDto::entityToDto)
+			.collect(Collectors.toList())
+			.get(0);
 	}
 
 	/**
 	 * 존재하는 회원인지 검사
 	 * @param memberSignUpReqDto
 	 */
-	private void extracted(MemberSignUpReqDto memberSignUpReqDto) {
-		Member existMember = memberRepository.findByMemberEmail(memberSignUpReqDto.getEmail());
-		if(ObjectUtils.isNotEmpty(existMember)) {
-			throw new ExistMemberException();
-		}
+	private void isExistMember(MemberSignUpReqDto memberSignUpReqDto) {
+		memberRepository.findByMemberEmail(memberSignUpReqDto.getEmail())
+			.ifPresent(member -> {
+				throw new ExistMemberException();
+			});
 	}
 }

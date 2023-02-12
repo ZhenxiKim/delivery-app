@@ -7,7 +7,7 @@ import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
  * @since 2023/02/10
  *
  */
-public class OverSelectedDateGapException  extends CustomException{
+public class OverSelectedDateGapException extends CustomException {
 	public OverSelectedDateGapException() {
 		super(SpecificExceptionCode.OVER_SELECTED_DATE_GAP_EXCEPTION);
 	}

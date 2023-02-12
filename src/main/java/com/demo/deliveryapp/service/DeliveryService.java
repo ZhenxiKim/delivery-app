@@ -12,5 +12,6 @@ import com.demo.deliveryapp.domain.dto.response.DeliveryResDto;
  */
 public interface DeliveryService {
 	List<DeliveryResDto> getDeliveryList(Long memberNo, String startDate, String endDate);
-	DeliveryResDto updateDelivery(DeliveryUpdateReqDto dto);
+
+	DeliveryResDto updateDelivery(Long memberNo, DeliveryUpdateReqDto dto, Long deliveryNo);
 }

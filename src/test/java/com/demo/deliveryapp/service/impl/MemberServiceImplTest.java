@@ -34,11 +34,14 @@ class MemberServiceImplTest {
 	@Test
 	@DisplayName("회원가입 테스트")
 	void signUp() {
+		String pwd = "!testPwd1234!";
+		Mockito.when(passwordEncoder.encode(any())).thenReturn(pwd);
 		Mockito.when(memberRepository.save(any(Member.class))).then(returnsFirstArg());
 
-		MemberSignUpResDto dto = memberService.signUp(new MemberSignUpReqDto("tester@gmail.com", passwordEncoder.encode("testerPw"), "tester"));
+		MemberSignUpResDto dto = memberService.signUp(
+			new MemberSignUpReqDto("tester@gmail.com", "!testPwd1234!", "tester"));
 
-		Assertions.assertEquals(dto.getName(),"tester");
-		Assertions.assertEquals(dto.getEmail(),"tester@gmail.com");
+		Assertions.assertEquals(dto.getName(), "tester");
+		Assertions.assertEquals(dto.getEmail(), "tester@gmail.com");
 	}
 }

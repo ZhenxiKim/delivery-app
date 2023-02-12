@@ -10,10 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * @author jhkim
@@ -23,9 +24,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @Entity
-public class Member extends BaseTimeEntity{
+public class Member extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +41,17 @@ public class Member extends BaseTimeEntity{
 
 	@OneToMany(mappedBy = "member")
 	private List<Delivery> deliveryList = new ArrayList<>();
+
+	@Builder
+	public Member(String memberEmail, String memberPassword, String memberName) {
+
+		Assert.isTrue(memberEmail != null, "email can not be null");
+		Assert.isTrue(memberPassword != null, "memberPassword can not be null");
+		Assert.isTrue(memberName != null, "memberName can not be null");
+
+		this.memberEmail = memberEmail;
+		this.memberPassword = memberPassword;
+		this.memberName = memberName;
+		this.memberSignupDate = LocalDateTime.now();
+	}
 }

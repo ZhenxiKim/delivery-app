@@ -8,9 +8,7 @@ import com.demo.deliveryapp.domain.enums.SpecificExceptionCode;
  *
  */
 public class NotExistMemberException extends CustomException {
-
 	public NotExistMemberException() {
 		super(SpecificExceptionCode.NOT_EXIST_MEMBER_EXCEPTION);
 	}
-
 }

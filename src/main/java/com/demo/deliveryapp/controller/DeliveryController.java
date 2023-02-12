@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,31 +40,21 @@ import lombok.extern.slf4j.Slf4j;
 public class DeliveryController {
 	private static final String DATE_REGEX = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$";
 	private final DeliveryService deliveryService;
+
 	@Operation(summary = "배달 조회 API", description = "로그인 후 token 획득 후 조회 가능")
 	@GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DeliveryResDto>> getDeliveryList(@AuthenticationPrincipal AuthenticatedUser user
-		,@Pattern(regexp = DATE_REGEX) @RequestParam String startDate
-		,@Pattern(regexp = DATE_REGEX) @RequestParam String endDate) {
-		checkToken(user);
+	public ResponseEntity<List<DeliveryResDto>> getDeliveryList(@AuthenticationPrincipal AuthenticatedUser user,
+		@Pattern(regexp = DATE_REGEX) @RequestParam String startDate,
+		@Pattern(regexp = DATE_REGEX) @RequestParam String endDate) {
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(deliveryService.getDeliveryList(user.getMemberNo(), startDate, endDate));
 	}
 
 	@Operation(summary = "배달 정보 수정 API", description = "로그인 후 token 획득 후 조회 가능")
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DeliveryResDto> updateDelivery(@AuthenticationPrincipal AuthenticatedUser user, @RequestBody DeliveryUpdateReqDto dto) {
-		checkToken(user);
+	@PutMapping(path = "/{deliveryNo}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<DeliveryResDto> updateDelivery(@AuthenticationPrincipal AuthenticatedUser user,
+		@RequestBody DeliveryUpdateReqDto dto, @PathVariable Long deliveryNo) {
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(deliveryService.updateDelivery(dto));
-	}
-
-	/**
-	 * token 값 확인
-	 * @param user
-	 */
-	private static void checkToken(AuthenticatedUser user) {
-		if(ObjectUtils.isEmpty(user)) {
-			throw new UnauthorizedException(SpecificExceptionCode.INVALID_JWT_TOKEN);
-		}
+			.body(deliveryService.updateDelivery(user.getMemberNo(), dto, deliveryNo));
 	}
 }
